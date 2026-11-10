@@ -5,6 +5,8 @@ import { SplashStep } from '@/components/steps/SplashStep';
 import { SettingsPage } from '@/components/SettingsPage';
 import { OnboardingStep } from '@/components/steps/OnboardingStep';
 import { ScanStep } from '@/components/steps/ScanStep';
+import { HybridScanStep } from '@/components/steps/HybridScanStep';
+import { HybridResultStep } from '@/components/steps/HybridResultStep';
 import { MetricsStep } from '@/components/steps/MetricsStep';
 import { CustomizerStep } from '@/components/steps/CustomizerStep';
 import { PrintabilityStep } from '@/components/steps/PrintabilityStep';
@@ -25,6 +27,7 @@ function App() {
   const setPrinter = useCallback((p: PrinterType) => dispatch({ type: 'SET_PRINTER', printer: p }), [dispatch]);
   const setScanMode = useCallback((m: ScanMode) => dispatch({ type: 'SET_SCAN_MODE', scanMode: m }), [dispatch]);
   const setCustomizer = useCallback((patch: Partial<CustomizerState>) => dispatch({ type: 'SET_CUSTOMIZER', patch }), [dispatch]);
+  const isHybridFoot = state.scanMode === 'hybrid' && state.scanTarget === 'foot';
   const afterMetrics = useCallback(
     () => dispatch({ type: 'GOTO', step: state.scanTarget === 'sole' ? 4 : 3 }),
     [dispatch, state.scanTarget],
@@ -55,8 +58,18 @@ function App() {
           onSoleScan={startSoleScan}
         />
       )}
-      {state.step === 1 && <ScanStep onComplete={next} scanTarget={state.scanTarget} />}
-      {state.step === 2 && <MetricsStep state={state} onNext={afterMetrics} />}
+      {state.step === 1 &&
+        (isHybridFoot ? (
+          <HybridScanStep onComplete={next} />
+        ) : (
+          <ScanStep onComplete={next} scanTarget={state.scanTarget} />
+        ))}
+      {state.step === 2 &&
+        (isHybridFoot ? (
+          <HybridResultStep state={state} onNext={next} />
+        ) : (
+          <MetricsStep state={state} onNext={afterMetrics} />
+        ))}
       {state.step === 3 && (
         <CustomizerStep state={state} setCustomizer={setCustomizer} onNext={next} />
       )}

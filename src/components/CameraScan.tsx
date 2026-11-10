@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
-import { CheckCircle2, ArrowRight } from 'lucide-react';
+import { ScanResultPanel } from '@/components/ScanResultPanel';
+import { ProgressRing } from '@/components/ui/ProgressRing';
 
 export type ScanType = 'fuss' | 'sohle';
 
 interface CameraScanProps {
   onComplete: () => void;
   scanType?: ScanType;
+  completeLabel?: string;
 }
 
 const SCAN_TOP = 33;
@@ -28,7 +30,7 @@ const IMAGES: Record<ScanType, { wire: string; foot: string; raster: string }> =
   },
 };
 
-export function CameraScan({ onComplete, scanType = 'fuss' }: CameraScanProps) {
+export function CameraScan({ onComplete, scanType = 'fuss', completeLabel }: CameraScanProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const rafRef = useRef<number>(0);
@@ -191,51 +193,22 @@ export function CameraScan({ onComplete, scanType = 'fuss' }: CameraScanProps) {
       {snapshot && <div className="absolute inset-0 bg-white z-40 animate-snapshot-flash pointer-events-none" />}
 
       {snapshot && (
-        <div className="absolute inset-0 z-50 flex flex-col bg-black animate-fade-up overflow-hidden">
-          {/* Image with raster overlay — upper third */}
-          <div className="relative h-1/3 w-full overflow-hidden">
-            <img
-              src={imgs.raster}
-              alt={isSole ? 'Gescanntes Sohlenmodell mit Messpunkten' : 'Gescanntes Fußmodell mit Messpunkten'}
-              className="absolute inset-0 w-full h-full object-contain opacity-90"
-            />
-          </div>
-
-          {/* Success content — lower two thirds */}
-          <div className="flex-1 flex flex-col items-center justify-between px-6 pt-6 pb-6">
-            <div className="flex flex-col items-center text-center">
-              <div className="w-16 h-16 rounded-full bg-verified flex items-center justify-center mb-5 animate-fade-up">
-                <CheckCircle2 className="w-8 h-8 text-white" strokeWidth={2.5} />
-              </div>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-verified mb-3">
-                Scan abgeschlossen
-              </p>
-              <h2 className="text-[24px] font-bold tracking-tight text-white text-center leading-tight mb-3">
-                Perfekt erfasst
-              </h2>
-              <p className="text-[13px] text-white/70 text-center leading-relaxed max-w-[280px]">
-                {isSole
-                  ? 'Deine Sohle wurde vollständig und präzise gescannt. Alle Metriken wurden aus dem 3D-Modell extrahiert und sind bereit zur Auswertung.'
-                  : 'Dein Fuß wurde vollständig und präzise gescannt. Alle Metriken wurden aus dem 3D-Modell extrahiert und sind bereit zur Auswertung.'}
-              </p>
-              <div className="mt-5 flex items-center gap-4">
-                <div className="flex items-center gap-1.5 bg-white/10 rounded-lg px-3 py-2">
-                  <span className="font-mono-tight text-[11px] text-white/90">MESSPUNKTE: 1.247</span>
-                </div>
-                <div className="flex items-center gap-1.5 bg-white/10 rounded-lg px-3 py-2">
-                  <span className="font-mono-tight text-[11px] text-verified">GENAUIGKEIT: 99,2%</span>
-                </div>
-              </div>
-            </div>
-            <button
-              onClick={onComplete}
-              className="no-tap-highlight w-full rounded-xl bg-signal text-white py-4 text-[15px] font-semibold tracking-tight transition-all duration-200 active:scale-[0.985] flex items-center justify-center gap-2"
-            >
-              {isSole ? 'Zu den Sohlenmetriken' : 'Zu den Fußmetriken'}
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
+        <ScanResultPanel
+          imageSrc={imgs.raster}
+          imageAlt={isSole ? 'Gescanntes Sohlenmodell mit Messpunkten' : 'Gescanntes Fußmodell mit Messpunkten'}
+          title="Perfekt erfasst"
+          description={
+            isSole
+              ? 'Deine Sohle wurde vollständig und präzise gescannt. Alle Metriken wurden aus dem 3D-Modell extrahiert und sind bereit zur Auswertung.'
+              : 'Dein Fuß wurde vollständig und präzise gescannt. Alle Metriken wurden aus dem 3D-Modell extrahiert und sind bereit zur Auswertung.'
+          }
+          badges={[
+            { label: 'MESSPUNKTE: 1.247' },
+            { label: 'GENAUIGKEIT: 99,2%', verified: true },
+          ]}
+          buttonLabel={completeLabel ?? (isSole ? 'Zu den Sohlenmetriken' : 'Zu den Fußmetriken')}
+          onComplete={onComplete}
+        />
       )}
 
       {!snapshot && (
@@ -250,34 +223,6 @@ export function CameraScan({ onComplete, scanType = 'fuss' }: CameraScanProps) {
           </p>
         </div>
       )}
-    </div>
-  );
-}
-
-function ProgressRing({ progress }: { progress: number }) {
-  const radius = 28;
-  const circumference = 2 * Math.PI * radius;
-  const offset = circumference - (progress / 100) * circumference;
-
-  return (
-    <div className="relative w-16 h-16">
-      <svg className="w-16 h-16 -rotate-90" viewBox="0 0 64 64">
-        <circle cx="32" cy="32" r={radius} fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="3" />
-        <circle
-          cx="32"
-          cy="32"
-          r={radius}
-          fill="none"
-          stroke="#EA580C"
-          strokeWidth="3"
-          strokeDasharray={circumference}
-          strokeDashoffset={offset}
-          strokeLinecap="round"
-        />
-      </svg>
-      <div className="absolute inset-0 flex items-center justify-center">
-        <span className="font-mono-tight text-[11px] font-semibold text-white">{Math.round(progress)}</span>
-      </div>
     </div>
   );
 }
