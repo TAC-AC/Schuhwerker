@@ -24,6 +24,8 @@ const STAGE_PROGRESS: Record<Stage, number> = {
   result: 100,
 };
 const FADE_MS = 1200;
+const LINE_TOP: Record<Stage, number> = { black: 33, plate: 66, wire: 33, scan: 33, result: 33 };
+const LINE_VISIBLE: Record<Stage, boolean> = { black: false, plate: true, wire: true, scan: false, result: false };
 
 function layerStyle(visible: boolean): CSSProperties {
   return {
@@ -62,6 +64,17 @@ export function PlateScan({ onComplete }: PlateScanProps) {
         className="absolute inset-0 z-10 w-full h-full object-contain"
         style={layerStyle(stage === 'scan' || stage === 'result')}
       />
+
+      <div
+        className="absolute left-0 right-0 z-20 pointer-events-none"
+        style={{
+          top: `${LINE_TOP[stage]}%`,
+          opacity: LINE_VISIBLE[stage] ? 1 : 0,
+          transition: `top ${STAGE_DURATION_MS[stage] || FADE_MS}ms linear, opacity 300ms ease-out`,
+        }}
+      >
+        <div className="h-[2px] bg-signal" />
+      </div>
 
       {stage === 'result' ? (
         <ScanResultPanel
