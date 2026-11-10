@@ -1,12 +1,13 @@
 import { useState } from 'react';
-import { Smartphone, ScanLine, ArrowRight, Check } from 'lucide-react';
+import { Smartphone, ScanLine, ArrowRight, Check, Settings } from 'lucide-react';
 import type { ScanMethod } from '@/types';
 
 interface SplashStepProps {
   onStart: (method: ScanMethod) => void;
+  onOpenSettings: () => void;
 }
 
-export function SplashStep({ onStart }: SplashStepProps) {
+export function SplashStep({ onStart, onOpenSettings }: SplashStepProps) {
   const [selected, setSelected] = useState<ScanMethod | null>(null);
 
   const methods: { id: ScanMethod; label: string; sublabel: string; icon: typeof Smartphone; desc: string }[] = [
@@ -37,6 +38,14 @@ export function SplashStep({ onStart }: SplashStepProps) {
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/80" />
       </div>
+
+      <button
+        onClick={onOpenSettings}
+        aria-label="Einstellungen"
+        className="no-tap-highlight absolute top-5 right-5 z-20 w-11 h-11 rounded-full border border-white/20 bg-black/30 backdrop-blur-md flex items-center justify-center text-white transition-all duration-200 hover:bg-black/50 hover:border-white/40 active:scale-95"
+      >
+        <Settings className="w-5 h-5" />
+      </button>
 
       {/* Slogan — top area */}
       <div className="relative z-10 flex-1 flex flex-col justify-end px-6 pb-6">

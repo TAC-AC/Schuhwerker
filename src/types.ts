@@ -32,6 +32,15 @@ export interface CustomizerState {
   tread: TreadProfile;
 }
 
+export interface UserProfile {
+  firstName: string;
+  lastName: string;
+  email: string;
+  shoeSize: number;
+  printer: string;
+  material: string;
+}
+
 export interface AppState {
   step: StepIndex;
   started: boolean;

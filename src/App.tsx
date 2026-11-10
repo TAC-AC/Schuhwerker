@@ -1,7 +1,8 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { IPhoneFrame } from '@/components/IPhoneFrame';
 import { StepIndicator } from '@/components/StepIndicator';
 import { SplashStep } from '@/components/steps/SplashStep';
+import { SettingsPage } from '@/components/SettingsPage';
 import { OnboardingStep } from '@/components/steps/OnboardingStep';
 import { ScanStep } from '@/components/steps/ScanStep';
 import { MetricsStep } from '@/components/steps/MetricsStep';
@@ -14,6 +15,7 @@ import type { HardwareProfile, PrinterType, CustomizerState, ScanMethod, ScanMod
 
 function App() {
   const [state, dispatch] = useAppMachine();
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   const next = useCallback(() => dispatch({ type: 'NEXT' }), [dispatch]);
   const reset = useCallback(() => dispatch({ type: 'RESET' }), [dispatch]);
@@ -31,7 +33,11 @@ function App() {
   if (!state.started) {
     return (
       <IPhoneFrame>
-        <SplashStep onStart={start} />
+        {settingsOpen ? (
+          <SettingsPage onBack={() => setSettingsOpen(false)} />
+        ) : (
+          <SplashStep onStart={start} onOpenSettings={() => setSettingsOpen(true)} />
+        )}
       </IPhoneFrame>
     );
   }
