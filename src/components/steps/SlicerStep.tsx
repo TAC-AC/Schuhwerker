@@ -162,6 +162,7 @@ export function SlicerStep({ onNext, scanTarget }: SlicerStepProps) {
           <div className="divide-y divide-hairline">
             <SlicerRow label="Filamentbedarf" value="47,00 g (18,10 m)" />
             <SlicerRow label="Erwartete Druckzeit" value="1 h 27 min" />
+            <SlicerRow label="Druckkosten" value="19,96 €" />
           </div>
         </Card>
       </div>

@@ -44,7 +44,11 @@ export function MetricsStep({ state, onNext }: MetricsStepProps) {
           <div className="grid grid-cols-2 gap-3">
             <MetricCard label="Fußlänge" value={String(m.lengthMm)} unit="mm" />
             <MetricCard label="Vorfußbreite" value={String(m.forefootWidthMm)} unit="mm" />
-            <MetricCard label="Risthöhe" value={String(m.instepHeightMm)} unit="mm" />
+            {state.scanTarget === 'sole' ? (
+              <MetricCard label="Sohlendicke" value="5" unit="mm" />
+            ) : (
+              <MetricCard label="Risthöhe" value={String(m.instepHeightMm)} unit="mm" />
+            )}
             <MetricCard label="Toleranzfenster" value={String(m.toleranceMm)} unit="mm" badge />
           </div>
         </div>
