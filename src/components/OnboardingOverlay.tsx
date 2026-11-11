@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type CSSProperties } from 'react';
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react';
 import { X, ChevronRight } from 'lucide-react';
 import type { OnboardingHighlight } from '@/lib/onboardingDefinitions';
 

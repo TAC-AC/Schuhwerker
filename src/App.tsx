@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { IPhoneFrame } from '@/components/IPhoneFrame';
 import { StepIndicator } from '@/components/StepIndicator';
 import { OnboardingOverlay } from '@/components/OnboardingOverlay';
@@ -41,6 +41,12 @@ function App() {
 
   const currentStepId = STEP_IDS[state.step];
   const highlights = ONBOARDING_DEFINITIONS[currentStepId];
+
+  useEffect(() => {
+    if (onboardingEnabled && state.started) {
+      setOnboardingActive(true);
+    }
+  }, [state.step, onboardingEnabled, state.started]);
 
   const shouldShowOnboarding =
     onboardingEnabled && onboardingActive && state.started && highlights.length > 0 && !settingsOpen;
