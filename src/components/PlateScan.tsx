@@ -6,8 +6,8 @@ interface PlateScanProps {
   onComplete: () => void;
 }
 
-const SCAN_TOP = 0;
-const SCAN_BOTTOM = 100;
+const SCAN_TOP = 33;
+const SCAN_BOTTOM = 66;
 const SCAN_RANGE = SCAN_BOTTOM - SCAN_TOP;
 const PHASE_DURATION = 5; // seconds per phase — slower than foot/sole scan
 
@@ -57,7 +57,7 @@ export function PlateScan({ onComplete }: PlateScanProps) {
 
   const p = (phaseTime / PHASE_DURATION) * 100;
 
-  // Line position: down = 0→100, up = 100→0
+  // Line position: down = 33→66, up = 66→33
   const goingDown = phase === 'down1' || phase === 'down2';
   const lineAbs = goingDown ? SCAN_TOP + (p / 100) * SCAN_RANGE : SCAN_BOTTOM - (p / 100) * SCAN_RANGE;
 
@@ -76,44 +76,26 @@ export function PlateScan({ onComplete }: PlateScanProps) {
 
   if (phase === 'down1') {
     // black background, no layers visible
-  } else if (phase === 'up1' || (done && phase === 'up2' && false)) {
-    // plate revealed from bottom up: line at lineAbs, plate shows below line
-    plateClipTop = lineAbs;
-    plateClipBottom = 0;
+  } else if (phase === 'up1') {
+    // plate revealed from bottom up: line at lineAbs, plate shows from SCAN_TOP to lineAbs
+    plateClipTop = lineAbs; plateClipBottom = 100 - SCAN_BOTTOM;
   } else if (phase === 'down2') {
-    // plate fully visible, wire revealed from top down: line at lineAbs, wire shows above line
-    plateClipTop = 0; plateClipBottom = 0;
-    wireClipTop = 0; wireClipBottom = 100 - lineAbs;
+    // plate fully visible, wire revealed from top down: wire shows from SCAN_TOP to lineAbs
+    plateClipTop = SCAN_TOP; plateClipBottom = 100 - SCAN_BOTTOM;
+    wireClipTop = SCAN_TOP; wireClipBottom = 100 - lineAbs;
   } else if (phase === 'up2') {
-    // wire fully visible, scan revealed from bottom up: line at lineAbs, scan shows below line
-    plateClipTop = 0; plateClipBottom = 0;
-    wireClipTop = 0; wireClipBottom = 0;
-    scanClipTop = lineAbs; scanClipBottom = 0;
+    // wire fully visible, scan revealed from bottom up: line at lineAbs, scan shows from SCAN_TOP to lineAbs
+    plateClipTop = SCAN_TOP; plateClipBottom = 100 - SCAN_BOTTOM;
+    wireClipTop = SCAN_TOP; wireClipBottom = 100 - SCAN_BOTTOM;
+    scanClipTop = lineAbs; scanClipBottom = 100 - SCAN_BOTTOM;
   }
 
-  // When done, show scan fully
+  // When done, show scan fully within scan area
   if (done) {
-    plateClipTop = 0; plateClipBottom = 0;
-    wireClipTop = 0; wireClipBottom = 0;
-    scanClipTop = 0; scanClipBottom = 0;
+    plateClipTop = SCAN_TOP; plateClipBottom = 100 - SCAN_BOTTOM;
+    wireClipTop = SCAN_TOP; wireClipBottom = 100 - SCAN_BOTTOM;
+    scanClipTop = SCAN_TOP; scanClipBottom = 100 - SCAN_BOTTOM;
   }
-
-  // For up1 phase: after line reaches top, plate is fully visible
-  // Actually let me reconsider: during up1, plate should be revealed as line goes up.
-  // Line starts at 100 (bottom) and goes to 0 (top).
-  // Plate shows BELOW the line (from lineAbs to bottom).
-  // At start (lineAbs=100): nothing visible. At end (lineAbs=0): fully visible.
-  // plateClipTop = lineAbs, plateClipBottom = 0. That's correct.
-
-  // For down2: wire revealed from top down.
-  // Line starts at 0 (top) and goes to 100 (bottom).
-  // Wire shows ABOVE the line (from 0 to lineAbs).
-  // wireClipTop = 0, wireClipBottom = 100 - lineAbs. Correct.
-
-  // For up2: scan revealed from bottom up.
-  // Line starts at 100 (bottom) and goes to 0 (top).
-  // Scan shows BELOW the line (from lineAbs to bottom).
-  // scanClipTop = lineAbs, scanClipBottom = 0. Correct.
 
   const overallProgress = done
     ? 100
