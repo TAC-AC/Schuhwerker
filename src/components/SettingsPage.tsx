@@ -1,5 +1,5 @@
 import { useEffect, useState, type FormEvent, type ReactNode } from 'react';
-import { ArrowLeft, Check } from 'lucide-react';
+import { ArrowLeft, Check, GraduationCap } from 'lucide-react';
 import { Card, SectionLabel } from '@/components/ui/Card';
 import { PrimaryButton } from '@/components/ui/Button';
 import { loadLatestUserProfile, saveUserProfile } from '@/lib/userProfile';
@@ -7,6 +7,8 @@ import { PRINTER_OPTIONS, type UserProfile } from '@/types';
 
 interface SettingsPageProps {
   onBack: () => void;
+  onboardingEnabled: boolean;
+  onOnboardingToggle: (enabled: boolean) => void;
 }
 
 interface FormValues {
@@ -49,7 +51,7 @@ function validate(values: FormValues): { profile: UserProfile } | { error: strin
   };
 }
 
-export function SettingsPage({ onBack }: SettingsPageProps) {
+export function SettingsPage({ onBack, onboardingEnabled, onOnboardingToggle }: SettingsPageProps) {
   const [values, setValues] = useState<FormValues>(EMPTY_FORM);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
@@ -212,6 +214,45 @@ Bitte trage hier deine Angaben ein. Sie werden für dich gespeichert.
                 ))}
               </select>
             </Field>
+          </Card>
+
+          <div>
+            <SectionLabel>App</SectionLabel>
+            <h2 className="text-[22px] font-semibold tracking-tight text-carbon leading-tight">
+              Einführung
+            </h2>
+            <p className="text-[13px] text-technical mt-1 leading-relaxed">
+              Schritt-für-Schritt-Erklärung der Funktionen auf jeder Seite.
+            </p>
+          </div>
+
+          <Card>
+            <button
+              type="button"
+              onClick={() => onOnboardingToggle(!onboardingEnabled)}
+              className="no-tap-highlight w-full flex items-center gap-3"
+            >
+              <div className="w-10 h-10 rounded-xl bg-signal/10 flex items-center justify-center shrink-0">
+                <GraduationCap className="w-5 h-5 text-signal" />
+              </div>
+              <div className="flex-1 text-left min-w-0">
+                <p className="text-[14px] font-semibold text-carbon">Onboarding anzeigen</p>
+                <p className="text-[12px] text-technical mt-0.5 leading-snug">
+                  {onboardingEnabled ? 'Aktiv — Erklärungen werden eingeblendet' : 'Ausgeschaltet'}
+                </p>
+              </div>
+              <div
+                className={`relative w-11 h-6 rounded-full transition-colors duration-200 shrink-0 ${
+                  onboardingEnabled ? 'bg-signal' : 'bg-hairline'
+                }`}
+              >
+                <div
+                  className={`absolute top-0.5 w-5 h-5 rounded-full bg-base-white shadow-sm transition-all duration-200 ${
+                    onboardingEnabled ? 'left-[22px]' : 'left-0.5'
+                  }`}
+                />
+              </div>
+            </button>
           </Card>
 
           {formError && <p className="text-[12px] text-red-600 leading-snug">{formError}</p>}

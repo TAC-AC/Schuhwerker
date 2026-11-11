@@ -42,6 +42,7 @@ export function CustomizerStep({ state, setCustomizer, onNext }: CustomizerStepP
           </h2>
         </div>
 
+        <div data-onboarding="model-select">
         <SegmentedControl
           value={c.model}
           onChange={(v: ShoeModel) => setCustomizer({ model: v })}
@@ -50,8 +51,9 @@ export function CustomizerStep({ state, setCustomizer, onNext }: CustomizerStepP
             { value: 'PureSlide', label: 'PureSlide (Flip-Flop)' },
           ]}
         />
+        </div>
 
-        <Card padding="sm" className="bg-gradient-to-b from-base-white to-base-off">
+        <Card padding="sm" className="bg-gradient-to-b from-base-white to-base-off" data-onboarding="3d-preview">
           <div className="h-56 -m-1 rounded-xl overflow-hidden">
             <ErrorBoundary fallback={<ThreeShoeViewer state={c} className="w-full h-full" />}>
               <STLViewer
@@ -68,7 +70,7 @@ export function CustomizerStep({ state, setCustomizer, onNext }: CustomizerStepP
           </div>
         </Card>
 
-        <div>
+        <div data-onboarding="color-zones">
           <SectionLabel>
             Farbzonierung ({isPureSlide ? '2' : '3'} Zonen)
           </SectionLabel>
@@ -106,7 +108,7 @@ export function CustomizerStep({ state, setCustomizer, onNext }: CustomizerStepP
           )}
         </div>
 
-        <div>
+        <div data-onboarding="tread">
           <SectionLabel>Profil-Struktur</SectionLabel>
           <div className="flex gap-2">
             {(['HexaGrip', 'WaveTrail'] as TreadProfile[]).map((t) => {

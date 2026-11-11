@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 import { IPhoneFrame } from '@/components/IPhoneFrame';
 import { StepIndicator } from '@/components/StepIndicator';
+import { OnboardingOverlay } from '@/components/OnboardingOverlay';
 import { SplashStep } from '@/components/steps/SplashStep';
 import { SettingsPage } from '@/components/SettingsPage';
 import { OnboardingStep } from '@/components/steps/OnboardingStep';
@@ -13,11 +14,16 @@ import { PrintabilityStep } from '@/components/steps/PrintabilityStep';
 import { SlicerStep } from '@/components/steps/SlicerStep';
 import { ExportStep } from '@/components/steps/ExportStep';
 import { useAppMachine } from '@/useAppMachine';
+import { useOnboardingEnabled } from '@/lib/useOnboardingEnabled';
+import { ONBOARDING_DEFINITIONS } from '@/lib/onboardingDefinitions';
+import { STEP_IDS } from '@/types';
 import type { HardwareProfile, PrinterType, CustomizerState, ScanMethod, ScanMode } from '@/types';
 
 function App() {
   const [state, dispatch] = useAppMachine();
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [onboardingEnabled, setOnboardingEnabled] = useOnboardingEnabled();
+  const [onboardingActive, setOnboardingActive] = useState(false);
 
   const next = useCallback(() => dispatch({ type: 'NEXT' }), [dispatch]);
   const reset = useCallback(() => dispatch({ type: 'RESET' }), [dispatch]);
@@ -33,11 +39,21 @@ function App() {
     [dispatch, state.scanTarget],
   );
 
+  const currentStepId = STEP_IDS[state.step];
+  const highlights = ONBOARDING_DEFINITIONS[currentStepId];
+
+  const shouldShowOnboarding =
+    onboardingEnabled && onboardingActive && state.started && highlights.length > 0 && !settingsOpen;
+
   if (!state.started) {
     return (
       <IPhoneFrame>
         {settingsOpen ? (
-          <SettingsPage onBack={() => setSettingsOpen(false)} />
+          <SettingsPage
+            onBack={() => setSettingsOpen(false)}
+            onboardingEnabled={onboardingEnabled}
+            onOnboardingToggle={setOnboardingEnabled}
+          />
         ) : (
           <SplashStep onStart={start} onOpenSettings={() => setSettingsOpen(true)} />
         )}
@@ -47,7 +63,7 @@ function App() {
 
   return (
     <IPhoneFrame>
-      <StepIndicator step={state.step} />
+      <StepIndicator step={state.step} onHelp={() => setOnboardingActive(true)} />
       {state.step === 0 && (
         <OnboardingStep
           state={state}
@@ -76,6 +92,14 @@ function App() {
       {state.step === 4 && <PrintabilityStep state={state} onNext={next} />}
       {state.step === 5 && <SlicerStep onNext={next} scanTarget={state.scanTarget} />}
       {state.step === 6 && <ExportStep state={state} onReset={reset} />}
+
+      {shouldShowOnboarding && (
+        <OnboardingOverlay
+          highlights={highlights}
+          onComplete={() => setOnboardingActive(false)}
+          onSkip={() => setOnboardingActive(false)}
+        />
+      )}
     </IPhoneFrame>
   );
 }

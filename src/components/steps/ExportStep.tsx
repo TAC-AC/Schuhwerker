@@ -48,7 +48,7 @@ Datum: ${new Date().toISOString()}
         </div>
 
         {isMaker ? (
-          <Card>
+          <Card data-onboarding="export-panel">
             <SectionLabel>Panel A — Maker</SectionLabel>
             <div className="flex items-start gap-3 mb-4">
               <div className="w-11 h-11 rounded-xl bg-base-off border border-hairline flex items-center justify-center shrink-0">
@@ -75,7 +75,7 @@ Datum: ${new Date().toISOString()}
             </PrimaryButton>
           </Card>
         ) : (
-          <Card>
+          <Card data-onboarding="export-panel">
             <SectionLabel>Panel B — Print-on-Demand</SectionLabel>
             <div className="flex items-start gap-3 mb-4">
               <div className="w-11 h-11 rounded-xl bg-base-off border border-hairline flex items-center justify-center shrink-0">
@@ -131,7 +131,7 @@ Datum: ${new Date().toISOString()}
       </div>
 
       <div className="sticky bottom-0 px-5 py-4 bg-gradient-to-t from-base-off via-base-off to-transparent flex flex-col items-center">
-        <TextLink onClick={onReset}>
+        <TextLink onClick={onReset} data-onboarding="reset">
           <span className="flex items-center gap-1.5">
             <RotateCcw className="w-3.5 h-3.5" />
             Zurück zum Dashboard / Neu konfigurieren

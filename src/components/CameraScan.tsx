@@ -134,7 +134,7 @@ export function CameraScan({ onComplete, scanType = 'fuss', completeLabel }: Cam
         : 66 + phaseProgress / 3;
 
   return (
-    <div className="flex-1 flex flex-col bg-black relative overflow-hidden">
+    <div className="flex-1 flex flex-col bg-black relative overflow-hidden" data-onboarding="scan-area">
       {hasCamera === true && (
         <video
           ref={videoRef}
@@ -176,7 +176,7 @@ export function CameraScan({ onComplete, scanType = 'fuss', completeLabel }: Cam
         <div className="h-[2px] bg-signal" />
       </div>
 
-      <div className="absolute top-4 left-4 right-4 flex justify-between items-center z-30">
+      <div className="absolute top-4 left-4 right-4 flex justify-between items-center z-30" data-onboarding="scan-hud">
         <div className="flex items-center gap-2 bg-black/40 backdrop-blur-sm rounded-lg px-2.5 py-1.5">
           <span className="font-mono-tight text-[10px] text-white/90">ABSTAND: 32,4 CM</span>
         </div>

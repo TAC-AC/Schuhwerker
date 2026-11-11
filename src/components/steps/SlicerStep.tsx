@@ -90,7 +90,7 @@ export function SlicerStep({ onNext, scanTarget }: SlicerStepProps) {
         </div>
 
         {/* Scan + Slicer overlay */}
-        <div className="relative h-52 rounded-xl overflow-hidden bg-black">
+        <div className="relative h-52 rounded-xl overflow-hidden bg-black" data-onboarding="slicer-view">
           <img
             src={imgs.base}
             alt="Scan-Grundbild"
@@ -157,7 +157,7 @@ export function SlicerStep({ onNext, scanTarget }: SlicerStepProps) {
         </Card>
 
         {/* Slice-Info */}
-        <Card className="bg-base-white">
+        <Card className="bg-base-white" data-onboarding="slice-info">
           <SectionLabel>Slice-Info</SectionLabel>
           <div className="divide-y divide-hairline">
             <SlicerRow label="Filamentbedarf" value="47,00 g (18,10 m)" />

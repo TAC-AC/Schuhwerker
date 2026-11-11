@@ -17,7 +17,7 @@ export function MetricsStep({ state, onNext }: MetricsStepProps) {
   const isHybrid = state.scanMode === 'hybrid';
 
   return (
-    <div className="flex-1 overflow-y-auto scrollbar-hide bg-base-off">
+    <div className="flex-1 overflow-y-auto scrollbar-hide bg-base-off" data-onboarding="3d-viewer">
       <div className="px-5 py-5 space-y-5">
         <div>
           <SectionLabel>3D-Scan</SectionLabel>
@@ -41,7 +41,7 @@ export function MetricsStep({ state, onNext }: MetricsStepProps) {
 
         <div>
           <SectionLabel>Präzisionsdaten</SectionLabel>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-3" data-onboarding="metrics-grid">
             <MetricCard label="Fußlänge" value={String(m.lengthMm)} unit="mm" />
             <MetricCard label="Vorfußbreite" value={String(m.forefootWidthMm)} unit="mm" />
             {state.scanTarget === 'sole' ? (

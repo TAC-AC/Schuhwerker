@@ -1,11 +1,13 @@
+import { HelpCircle } from 'lucide-react';
 import { STEP_LABELS } from '@/types';
 import type { StepIndex } from '@/types';
 
 interface StepIndicatorProps {
   step: StepIndex;
+  onHelp?: () => void;
 }
 
-export function StepIndicator({ step }: StepIndicatorProps) {
+export function StepIndicator({ step, onHelp }: StepIndicatorProps) {
   const total = STEP_LABELS.length;
   return (
     <div className="px-5 pt-5 pb-4 flex items-center justify-between border-b border-hairline bg-base-white">
@@ -25,6 +27,15 @@ export function StepIndicator({ step }: StepIndicatorProps) {
             }`}
           />
         ))}
+        {onHelp && (
+          <button
+            onClick={onHelp}
+            aria-label="Hilfe"
+            className="no-tap-highlight ml-2 w-6 h-6 rounded-full flex items-center justify-center text-technical hover:text-signal transition-colors"
+          >
+            <HelpCircle className="w-4 h-4" />
+          </button>
+        )}
       </div>
     </div>
   );

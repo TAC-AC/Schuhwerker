@@ -19,7 +19,7 @@ export function PrintabilityStep({ state, onNext }: PrintabilityStepProps) {
   return (
     <div className="flex-1 overflow-y-auto scrollbar-hide bg-base-off">
       <div className="px-5 py-5 space-y-4">
-        <Card className="bg-base-white">
+        <Card className="bg-base-white" data-onboarding="print-volume">
           <p className="text-[11px] uppercase tracking-[0.14em] text-technical font-semibold">
             Ausgewählter Bauraum
           </p>
@@ -27,7 +27,7 @@ export function PrintabilityStep({ state, onNext }: PrintabilityStepProps) {
           <p className="font-mono-tight text-[12px] text-technical mt-0.5">{PRINTER_VOLUMES[state.printer]}</p>
         </Card>
 
-        <Card padding="sm" className="bg-base-white">
+        <Card padding="sm" className="bg-base-white" data-onboarding="print-checks">
           <div className="divide-y divide-hairline">
             {CHECKS.map((check) => (
               <div key={check.title} className="flex items-start justify-between gap-3 px-1 py-3 first:pt-1 last:pb-1">
@@ -44,7 +44,7 @@ export function PrintabilityStep({ state, onNext }: PrintabilityStepProps) {
           </div>
         </Card>
 
-        <Card className="bg-base-white">
+        <Card className="bg-base-white" data-onboarding="material">
           <div className="flex items-start gap-3">
             <ShieldCheck className="w-5 h-5 text-carbon shrink-0 mt-0.5" />
             <div className="min-w-0">

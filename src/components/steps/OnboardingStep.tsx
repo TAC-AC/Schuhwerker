@@ -37,7 +37,7 @@ export function OnboardingStep({ state, setHardware, setPrinter, setScanMode, on
           </p>
         </div>
 
-        <Card>
+        <Card data-onboarding="checklist">
           <SectionLabel>Checkliste</SectionLabel>
           <div className="space-y-2.5">
             {checklistItems.map((item, i) => (
@@ -45,7 +45,6 @@ export function OnboardingStep({ state, setHardware, setPrinter, setScanMode, on
                 key={i}
                 className="w-full flex items-center gap-3"
               >
-                <div className="w-5 h-5 rounded-md border border-hairline flex items-center justify-center shrink-0" />
                 <item.icon className="w-4 h-4 text-technical shrink-0" />
                 <span className="text-[13px] leading-snug text-technical">
                   {item.label}
@@ -55,7 +54,7 @@ export function OnboardingStep({ state, setHardware, setPrinter, setScanMode, on
           </div>
         </Card>
 
-        <div>
+        <div data-onboarding="scan-mode">
           <SectionLabel>Scan-Modus</SectionLabel>
           <div className="grid grid-cols-2 gap-3">
             <button
@@ -89,7 +88,7 @@ export function OnboardingStep({ state, setHardware, setPrinter, setScanMode, on
           </div>
         </div>
 
-        <div>
+        <div data-onboarding="hardware">
           <SectionLabel>Hardware-Profil</SectionLabel>
           <SegmentedControl
             value={state.hardware}
@@ -136,6 +135,7 @@ export function OnboardingStep({ state, setHardware, setPrinter, setScanMode, on
 
         <button
           onClick={onSoleScan}
+          data-onboarding="sole-scan"
           className="no-tap-highlight w-full text-left"
         >
           <Card className="border-dashed transition-all duration-200 hover:border-signal hover:bg-signal/[0.03] active:scale-[0.99]">
