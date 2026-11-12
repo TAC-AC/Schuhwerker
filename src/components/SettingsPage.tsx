@@ -118,7 +118,7 @@ export function SettingsPage({ onBack, onboardingEnabled, onOnboardingToggle }: 
   };
 
   return (
-    <div className="flex-1 flex flex-col bg-base-off animate-fade-up">
+    <div className="flex-1 flex flex-col min-h-0 bg-base-off animate-fade-up">
       <header className="flex items-center gap-3 px-5 pt-5 pb-3">
         <button
           type="button"
