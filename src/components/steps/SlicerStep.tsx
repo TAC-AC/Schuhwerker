@@ -151,7 +151,7 @@ export function SlicerStep({ onNext, scanTarget }: SlicerStepProps) {
           <div className="divide-y divide-hairline">
             <SlicerRow label="Objekt" value="Scan" />
             <SlicerRow label="Drucker" value="Prusa MK4" />
-            <SlicerRow label="Filament" value="TPU" />
+            <SlicerRow label="Filament" value={scanTarget === 'sole' ? 'Overture TPU 95A' : 'Recreus Filaflex 82A'} />
             <SlicerRow label="Schichthöhe / Speed" value="0,25 mm" />
           </div>
         </Card>

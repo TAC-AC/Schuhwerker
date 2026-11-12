@@ -32,11 +32,25 @@ export interface CustomizerState {
   tread: TreadProfile;
 }
 
+export type MaterialType =
+  | 'Overture TPU 95A'
+  | 'ColorFabb varioShore TPU'
+  | 'Recreus Filaflex 82A'
+  | 'Extrudr Flex Semisoft';
+
+export const MATERIAL_OPTIONS: MaterialType[] = [
+  'Overture TPU 95A',
+  'ColorFabb varioShore TPU',
+  'Recreus Filaflex 82A',
+  'Extrudr Flex Semisoft',
+];
+
 export interface UserProfile {
   firstName: string;
   lastName: string;
   email: string;
   shoeSize: number;
+  weightKg: number;
   printer: string;
   material: string;
 }

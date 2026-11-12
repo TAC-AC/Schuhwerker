@@ -6,6 +6,7 @@ interface UserProfileRow {
   last_name: string;
   email: string;
   shoe_size: number;
+  weight_kg: number | null;
   printer: string;
   material: string;
 }
@@ -16,6 +17,7 @@ function fromRow(row: UserProfileRow): UserProfile {
     lastName: row.last_name,
     email: row.email,
     shoeSize: Number(row.shoe_size),
+    weightKg: row.weight_kg != null ? Number(row.weight_kg) : 0,
     printer: row.printer,
     material: row.material,
   };
@@ -24,7 +26,7 @@ function fromRow(row: UserProfileRow): UserProfile {
 export async function loadLatestUserProfile(): Promise<UserProfile | null> {
   const { data, error } = await supabase
     .from('user_profiles')
-    .select('first_name, last_name, email, shoe_size, printer, material')
+    .select('first_name, last_name, email, shoe_size, weight_kg, printer, material')
     .order('created_at', { ascending: false })
     .limit(1)
     .maybeSingle();
@@ -40,6 +42,7 @@ export async function saveUserProfile(profile: UserProfile): Promise<void> {
     last_name: profile.lastName,
     email: profile.email,
     shoe_size: profile.shoeSize,
+    weight_kg: profile.weightKg,
     printer: profile.printer,
     material: profile.material,
   });

@@ -11,7 +11,7 @@ interface PrintabilityStepProps {
 
 const CHECKS = [
   { title: 'Wandstärken-Validierung', detail: '1.8 mm (Min. 1.6 mm gefordert)' },
-  { title: 'Überhang-Analyse', detail: 'Max. 51.5° (Support-frei druckbar)' },
+  { title: 'Überhang-Analyse', detail: 'Max. 51,5°' },
   { title: 'Bauraum-Kollision', detail: '100% passend via 45° Diagonal Placement' },
 ];
 
@@ -45,22 +45,47 @@ export function PrintabilityStep({ state, onNext }: PrintabilityStepProps) {
         </Card>
 
         <Card className="bg-base-white" data-onboarding="material">
-          <div className="flex items-start gap-3">
-            <ShieldCheck className="w-5 h-5 text-carbon shrink-0 mt-0.5" />
-            <div className="min-w-0">
-              <p className="text-[15px] font-semibold text-carbon">Monomaterial TPU</p>
-              <p className="font-mono-tight text-[11px] uppercase tracking-[0.08em] text-technical mt-1">
-                Shore 90A · 100% recycelbar
-              </p>
-              <div className="space-y-2 mt-4">
-                <div className="flex items-start gap-2 text-[13px] text-technical">
-                  <Check className="w-4 h-4 text-carbon shrink-0 mt-0.5" strokeWidth={2.5} />
-                  <span>Keine giftigen Klebstoffe</span>
+          <div className="space-y-4">
+            <div className="flex items-start gap-3">
+              <ShieldCheck className="w-5 h-5 text-carbon shrink-0 mt-0.5" />
+              <div className="min-w-0">
+                <p className="text-[15px] font-semibold text-carbon">Materialien</p>
+                <p className="font-mono-tight text-[11px] uppercase tracking-[0.08em] text-technical mt-1">
+                  100% recycelbar
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <div className="rounded-lg bg-base-off p-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-[12px] font-semibold text-carbon">Sohle</span>
+                  <span className="font-mono-tight text-[12px] text-technical">Overture TPU 95A</span>
                 </div>
-                <div className="flex items-start gap-2 text-[13px] text-technical leading-snug">
-                  <Check className="w-4 h-4 text-carbon shrink-0 mt-0.5" strokeWidth={2.5} />
-                  <span>Vorkonfigurierte Lüfter- und Geschwindigkeitsparameter</span>
+                <p className="text-[11px] text-technical mt-1 leading-relaxed">
+                  Shore 95A — hart, abriebfest für die Laufsohle.
+                </p>
+              </div>
+
+              <div className="rounded-lg bg-base-off p-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-[12px] font-semibold text-carbon">Oberschuh</span>
+                  <span className="font-mono-tight text-[12px] text-technical">Recreus Filaflex 82A</span>
                 </div>
+                <p className="text-[11px] text-technical mt-1 leading-relaxed">
+                  Shore 82A — flexibel und weich für den Oberbau.
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-start gap-2 text-[13px] text-technical">
+                <Check className="w-4 h-4 text-carbon shrink-0 mt-0.5" strokeWidth={2.5} />
+                <span>Keine giftigen Klebstoffe</span>
+              </div>
+              <div className="flex items-start gap-2 text-[13px] text-technical leading-snug">
+                <Check className="w-4 h-4 text-carbon shrink-0 mt-0.5" strokeWidth={2.5} />
+                <span>Vorkonfigurierte Lüfter- und Geschwindigkeitsparameter</span>
               </div>
             </div>
           </div>

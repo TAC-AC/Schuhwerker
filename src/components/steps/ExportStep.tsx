@@ -15,7 +15,7 @@ export function ExportStep({ state, onReset }: ExportStepProps) {
     const content = `[Schuhwerker 3D — Fertigungspaket]
 Modell: ${state.customizer.model}
 Drucker: ${state.printer}
-Material: TPU Shore 85A/95A
+Material: Sohle=Overture TPU 95A / Oberschuh=Recreus Filaflex 82A
 Profil: ${state.customizer.tread}
 Farben: Sohle=${state.customizer.outsoleColor} Oberschuh=${state.customizer.midsoleColor} Schnuer=${state.customizer.laceColor}
 Fußdaten: L=${state.metrics.lengthMm}mm B=${state.metrics.forefootWidthMm}mm H=${state.metrics.instepHeightMm}mm

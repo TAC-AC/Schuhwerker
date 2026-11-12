@@ -3,7 +3,7 @@ import { ArrowLeft, Check, GraduationCap } from 'lucide-react';
 import { Card, SectionLabel } from '@/components/ui/Card';
 import { PrimaryButton } from '@/components/ui/Button';
 import { loadLatestUserProfile, saveUserProfile } from '@/lib/userProfile';
-import { PRINTER_OPTIONS, type UserProfile } from '@/types';
+import { PRINTER_OPTIONS, MATERIAL_OPTIONS, type UserProfile } from '@/types';
 
 interface SettingsPageProps {
   onBack: () => void;
@@ -16,6 +16,7 @@ interface FormValues {
   lastName: string;
   email: string;
   shoeSize: string;
+  weightKg: string;
   printer: string;
   material: string;
 }
@@ -25,6 +26,7 @@ const EMPTY_FORM: FormValues = {
   lastName: '',
   email: '',
   shoeSize: '',
+  weightKg: '',
   printer: '',
   material: '',
 };
@@ -37,17 +39,21 @@ function validate(values: FormValues): { profile: UserProfile } | { error: strin
   const email = values.email.trim();
   const material = values.material.trim();
   const shoeSize = Number(values.shoeSize.replace(',', '.'));
+  const weightKg = Number(values.weightKg.replace(',', '.'));
 
   if (!firstName || !lastName) return { error: 'Bitte Vor- und Nachname eintragen.' };
   if (!EMAIL_PATTERN.test(email)) return { error: 'Bitte eine gültige E-Mail-Adresse eintragen.' };
   if (!Number.isFinite(shoeSize) || shoeSize < 20 || shoeSize > 60) {
     return { error: 'Bitte eine gültige Schuhgröße eintragen (20 bis 60).' };
   }
+  if (!values.weightKg || !Number.isFinite(weightKg) || weightKg < 20 || weightKg > 300) {
+    return { error: 'Bitte ein gültiges Körpergewicht eintragen (20 bis 300 kg).' };
+  }
   if (!values.printer) return { error: 'Bitte einen 3D-Drucker auswählen.' };
-  if (!material) return { error: 'Bitte ein Material eintragen.' };
+  if (!material) return { error: 'Bitte ein Material auswählen.' };
 
   return {
-    profile: { firstName, lastName, email, shoeSize, printer: values.printer, material },
+    profile: { firstName, lastName, email, shoeSize, weightKg, printer: values.printer, material },
   };
 }
 
@@ -69,6 +75,7 @@ export function SettingsPage({ onBack, onboardingEnabled, onOnboardingToggle }: 
           lastName: profile.lastName,
           email: profile.email,
           shoeSize: String(profile.shoeSize).replace('.', ','),
+          weightKg: profile.weightKg ? String(profile.weightKg).replace('.', ',') : '',
           printer: profile.printer,
           material: profile.material,
         });
@@ -187,17 +194,34 @@ Bitte trage hier deine Angaben ein. Sie werden für dich gespeichert.
                   className={inputClass}
                 />
               </Field>
-              <Field label="Material">
+              <Field label="Körpergewicht">
                 <input
                   type="text"
-                  placeholder="z. B. PLA"
-                  value={values.material}
-                  onChange={(e) => update('material', e.target.value)}
+                  inputMode="decimal"
+                  placeholder="z. B. 75"
+                  value={values.weightKg}
+                  onChange={(e) => update('weightKg', e.target.value)}
                   disabled={loading}
                   className={inputClass}
                 />
               </Field>
             </div>
+
+            <Field label="Material">
+              <select
+                value={values.material}
+                onChange={(e) => update('material', e.target.value)}
+                disabled={loading}
+                className={inputClass}
+              >
+                <option value="">Material auswählen</option>
+                {MATERIAL_OPTIONS.map((m) => (
+                  <option key={m} value={m}>
+                    {m}
+                  </option>
+                ))}
+              </select>
+            </Field>
 
             <Field label="3D-Drucker">
               <select
