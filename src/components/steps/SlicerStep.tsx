@@ -160,9 +160,19 @@ export function SlicerStep({ onNext, scanTarget }: SlicerStepProps) {
         <Card className="bg-base-white" data-onboarding="slice-info">
           <SectionLabel>Slice-Info</SectionLabel>
           <div className="divide-y divide-hairline">
-            <SlicerRow label="Filamentbedarf" value="47,00 g (18,10 m)" />
-            <SlicerRow label="Erwartete Druckzeit" value="1 h 27 min" />
-            <SlicerRow label="Druckkosten" value="19,96 €" />
+            {scanTarget === 'sole' ? (
+              <>
+                <SlicerRow label="Filamentbedarf" value="60,38 g (290,38 m)" />
+                <SlicerRow label="Erwartete Druckzeit" value="2 h 09 min" />
+                <SlicerRow label="Druckkosten" value="2,09 €" />
+              </>
+            ) : (
+              <>
+                <SlicerRow label="Filamentbedarf" value="263,97 g (88,50 m)" />
+                <SlicerRow label="Erwartete Druckzeit" value="11 h 29 min" />
+                <SlicerRow label="Druckkosten" value="28,50 €" />
+              </>
+            )}
           </div>
         </Card>
       </div>
