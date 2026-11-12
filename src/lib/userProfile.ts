@@ -8,7 +8,8 @@ interface UserProfileRow {
   shoe_size: number;
   weight_kg: number | null;
   printer: string;
-  material: string;
+  sole_material: string | null;
+  upper_material: string | null;
 }
 
 function fromRow(row: UserProfileRow): UserProfile {
@@ -19,14 +20,15 @@ function fromRow(row: UserProfileRow): UserProfile {
     shoeSize: Number(row.shoe_size),
     weightKg: row.weight_kg != null ? Number(row.weight_kg) : 0,
     printer: row.printer,
-    material: row.material,
+    soleMaterial: row.sole_material ?? '',
+    upperMaterial: row.upper_material ?? '',
   };
 }
 
 export async function loadLatestUserProfile(): Promise<UserProfile | null> {
   const { data, error } = await supabase
     .from('user_profiles')
-    .select('first_name, last_name, email, shoe_size, weight_kg, printer, material')
+    .select('first_name, last_name, email, shoe_size, weight_kg, printer, sole_material, upper_material')
     .order('created_at', { ascending: false })
     .limit(1)
     .maybeSingle();
@@ -44,7 +46,8 @@ export async function saveUserProfile(profile: UserProfile): Promise<void> {
     shoe_size: profile.shoeSize,
     weight_kg: profile.weightKg,
     printer: profile.printer,
-    material: profile.material,
+    sole_material: profile.soleMaterial,
+    upper_material: profile.upperMaterial,
   });
 
   if (error) throw new Error(error.message);

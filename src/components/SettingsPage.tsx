@@ -18,7 +18,8 @@ interface FormValues {
   shoeSize: string;
   weightKg: string;
   printer: string;
-  material: string;
+  soleMaterial: string;
+  upperMaterial: string;
 }
 
 const EMPTY_FORM: FormValues = {
@@ -28,7 +29,8 @@ const EMPTY_FORM: FormValues = {
   shoeSize: '',
   weightKg: '',
   printer: '',
-  material: '',
+  soleMaterial: '',
+  upperMaterial: '',
 };
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -37,7 +39,8 @@ function validate(values: FormValues): { profile: UserProfile } | { error: strin
   const firstName = values.firstName.trim();
   const lastName = values.lastName.trim();
   const email = values.email.trim();
-  const material = values.material.trim();
+  const soleMaterial = values.soleMaterial.trim();
+  const upperMaterial = values.upperMaterial.trim();
   const shoeSize = Number(values.shoeSize.replace(',', '.'));
   const weightKg = Number(values.weightKg.replace(',', '.'));
 
@@ -50,10 +53,11 @@ function validate(values: FormValues): { profile: UserProfile } | { error: strin
     return { error: 'Bitte ein gültiges Körpergewicht eintragen (20 bis 300 kg).' };
   }
   if (!values.printer) return { error: 'Bitte einen 3D-Drucker auswählen.' };
-  if (!material) return { error: 'Bitte ein Material auswählen.' };
+  if (!soleMaterial) return { error: 'Bitte ein Material für die Sohle auswählen.' };
+  if (!upperMaterial) return { error: 'Bitte ein Material für den Oberschuh auswählen.' };
 
   return {
-    profile: { firstName, lastName, email, shoeSize, weightKg, printer: values.printer, material },
+    profile: { firstName, lastName, email, shoeSize, weightKg, printer: values.printer, soleMaterial, upperMaterial },
   };
 }
 
@@ -77,7 +81,8 @@ export function SettingsPage({ onBack, onboardingEnabled, onOnboardingToggle }: 
           shoeSize: String(profile.shoeSize).replace('.', ','),
           weightKg: profile.weightKg ? String(profile.weightKg).replace('.', ',') : '',
           printer: profile.printer,
-          material: profile.material,
+          soleMaterial: profile.soleMaterial,
+          upperMaterial: profile.upperMaterial,
         });
       })
       .catch(() => {
@@ -132,14 +137,14 @@ export function SettingsPage({ onBack, onboardingEnabled, onOnboardingToggle }: 
       </header>
 
       <form onSubmit={handleSubmit} className="flex-1 flex flex-col min-h-0">
-        <div className="flex-1 overflow-y-auto scrollbar-hide px-5 py-4 space-y-5">
+        <div className="flex-1 overflow-y-auto scrollbar-hide px-5 py-3 space-y-3">
           <div>
             <SectionLabel>Persönliche Daten</SectionLabel>
             <h2 className="text-[22px] font-semibold tracking-tight text-carbon leading-tight">
               Dein Profil
             </h2>
             <p className="text-[13px] text-technical mt-1 leading-relaxed">
-Bitte trage hier deine Angaben ein. Sie werden für dich gespeichert.
+              Trage hier deine Angaben ein. Sie werden gespeichert.
             </p>
           </div>
 
@@ -147,7 +152,7 @@ Bitte trage hier deine Angaben ein. Sie werden für dich gespeichert.
             <p className="text-[12px] text-red-600 leading-snug">{loadError}</p>
           )}
 
-          <Card padding="lg" className="space-y-4">
+          <Card padding="lg" className="space-y-3">
             <div className="grid grid-cols-2 gap-3">
               <Field label="Vorname">
                 <input
@@ -207,21 +212,34 @@ Bitte trage hier deine Angaben ein. Sie werden für dich gespeichert.
               </Field>
             </div>
 
-            <Field label="Material">
-              <select
-                value={values.material}
-                onChange={(e) => update('material', e.target.value)}
-                disabled={loading}
-                className={inputClass}
-              >
-                <option value="">Material auswählen</option>
-                {MATERIAL_OPTIONS.map((m) => (
-                  <option key={m} value={m}>
-                    {m}
-                  </option>
-                ))}
-              </select>
-            </Field>
+            <div className="grid grid-cols-2 gap-3">
+              <Field label="Material Sohle">
+                <select
+                  value={values.soleMaterial}
+                  onChange={(e) => update('soleMaterial', e.target.value)}
+                  disabled={loading}
+                  className={inputClass}
+                >
+                  <option value="">Sohle wählen</option>
+                  {MATERIAL_OPTIONS.map((m) => (
+                    <option key={m} value={m}>{m}</option>
+                  ))}
+                </select>
+              </Field>
+              <Field label="Material Oberschuh">
+                <select
+                  value={values.upperMaterial}
+                  onChange={(e) => update('upperMaterial', e.target.value)}
+                  disabled={loading}
+                  className={inputClass}
+                >
+                  <option value="">Oberschuh wählen</option>
+                  {MATERIAL_OPTIONS.map((m) => (
+                    <option key={m} value={m}>{m}</option>
+                  ))}
+                </select>
+              </Field>
+            </div>
 
             <Field label="3D-Drucker">
               <select
@@ -232,9 +250,7 @@ Bitte trage hier deine Angaben ein. Sie werden für dich gespeichert.
               >
                 <option value="">Drucker auswählen</option>
                 {PRINTER_OPTIONS.map((p) => (
-                  <option key={p} value={p}>
-                    {p}
-                  </option>
+                  <option key={p} value={p}>{p}</option>
                 ))}
               </select>
             </Field>
@@ -288,7 +304,7 @@ Bitte trage hier deine Angaben ein. Sie werden für dich gespeichert.
           )}
         </div>
 
-        <div className="px-5 py-4 bg-gradient-to-t from-base-off via-base-off to-transparent">
+        <div className="px-5 py-3 bg-gradient-to-t from-base-off via-base-off to-transparent">
           <PrimaryButton disabled={loading || saving}>
             {saving ? 'Wird gespeichert…' : 'Speichern'}
           </PrimaryButton>
@@ -299,12 +315,12 @@ Bitte trage hier deine Angaben ein. Sie werden für dich gespeichert.
 }
 
 const inputClass =
-  'w-full rounded-xl border border-hairline bg-base-white px-3.5 py-3 text-[14px] text-carbon placeholder:text-technical/60 outline-none transition-all duration-200 focus:border-signal focus:ring-1 focus:ring-signal disabled:opacity-50';
+  'w-full rounded-xl border border-hairline bg-base-white px-3.5 py-2.5 text-[14px] text-carbon placeholder:text-technical/60 outline-none transition-all duration-200 focus:border-signal focus:ring-1 focus:ring-signal disabled:opacity-50';
 
 function Field({ label, children }: { label: string; children: ReactNode }) {
   return (
     <label className="block">
-      <span className="block text-[12px] font-medium text-technical mb-1.5">{label}</span>
+      <span className="block text-[12px] font-medium text-technical mb-1">{label}</span>
       {children}
     </label>
   );

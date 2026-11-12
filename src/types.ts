@@ -52,7 +52,8 @@ export interface UserProfile {
   shoeSize: number;
   weightKg: number;
   printer: string;
-  material: string;
+  soleMaterial: string;
+  upperMaterial: string;
 }
 
 export interface AppState {
