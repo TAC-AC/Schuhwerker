@@ -37,7 +37,7 @@ export function HybridScanStep({ onComplete }: HybridScanStepProps) {
 
   if (active === 'plate') return <PlateScan onComplete={() => finish('plate')} />;
   if (active === 'foot') {
-    return <CameraScan scanType="fuss" completeLabel="Zurück zur Auswahl" onComplete={() => finish('foot')} />;
+    return <CameraScan scanType="fuss" completeLabel="Zurück zur Auswahl" accuracyOverride="90,85%" onComplete={() => finish('foot')} />;
   }
 
   const bothDone = done.plate && done.foot;

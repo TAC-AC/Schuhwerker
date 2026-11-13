@@ -174,7 +174,7 @@ export function PlateScan({ onComplete }: PlateScanProps) {
           description="Die Andruckplatte wurde vollständig erfasst. Die physikalischen Referenzwerte stehen für den Abgleich bereit."
           badges={[
             { label: 'REFERENZPUNKTE: 2.371' },
-            { label: 'GENAUIGKEIT: 99,6%', verified: true },
+            { label: 'GENAUIGKEIT: 91,28%', verified: true },
           ]}
           buttonLabel="Zurück zur Auswahl"
           onComplete={onComplete}
@@ -186,13 +186,7 @@ export function PlateScan({ onComplete }: PlateScanProps) {
           <ProgressRing progress={overallProgress} />
         </div>
       )}
-      {!done && (
-        <div className="absolute bottom-8 right-4 z-30">
-          <p className="font-mono-tight text-[10px] text-white/70">
-            {`${Math.round(overallProgress)}%`}
-          </p>
-        </div>
-      )}
+
     </div>
   );
 }

@@ -119,11 +119,15 @@ export function HybridResultStep({ state, onNext }: HybridResultStepProps) {
         <Card className="bg-verified-bg border-verified/30">
           <div className="flex items-start gap-3">
             <CheckCircle2 className="w-5 h-5 text-verified shrink-0 mt-0.5" />
-            <div>
+            <div className="flex-1">
               <p className="text-[13px] font-semibold text-carbon">Qualität: Hervorragend</p>
               <p className="text-[12px] text-carbon/70 mt-1 leading-relaxed">
-                Beide Scans stimmen überein (Delta: +{m.deltaMm.toFixed(1)} mm).
+                Beide Scans wurden abgeglichen und zu einer präzisen Schuhgeometrie verrechnet (Delta: +{m.deltaMm.toFixed(1)} mm).
               </p>
+              <div className="mt-3 flex items-center gap-2">
+                <span className="text-[11px] text-technical">Kombinierte Genauigkeit</span>
+                <span className="font-mono-tight text-[14px] font-semibold text-verified">99,15%</span>
+              </div>
             </div>
           </div>
         </Card>

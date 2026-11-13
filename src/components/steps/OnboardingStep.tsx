@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Check, CreditCard, Layers, Clock, ChevronDown, Zap, ScanLine, Footprints } from 'lucide-react';
+import { Check, Layers, Clock, ChevronDown, Zap, ScanLine, Footprints } from 'lucide-react';
 import { Card, SectionLabel } from '@/components/ui/Card';
 import { SegmentedControl } from '@/components/ui/SegmentedControl';
 import { PrimaryButton } from '@/components/ui/Button';
@@ -19,7 +19,6 @@ export function OnboardingStep({ state, setHardware, setPrinter, setScanMode, on
   const [printerOpen, setPrinterOpen] = useState(false);
 
   const checklistItems = [
-    { icon: CreditCard, label: 'Standard-Kredit-/Referenzkarte bereithalten' },
     { icon: Layers, label: 'Flache, kontrastierte harte Oberfläche' },
     { icon: Clock, label: 'Geschätzte Dauer: 10–12 Minuten' },
   ];

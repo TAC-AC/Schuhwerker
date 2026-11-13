@@ -8,6 +8,7 @@ interface CameraScanProps {
   onComplete: () => void;
   scanType?: ScanType;
   completeLabel?: string;
+  accuracyOverride?: string;
 }
 
 const SCAN_TOP = 33;
@@ -30,7 +31,7 @@ const IMAGES: Record<ScanType, { wire: string; foot: string; raster: string }> =
   },
 };
 
-export function CameraScan({ onComplete, scanType = 'fuss', completeLabel }: CameraScanProps) {
+export function CameraScan({ onComplete, scanType = 'fuss', completeLabel, accuracyOverride }: CameraScanProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const rafRef = useRef<number>(0);
@@ -204,7 +205,7 @@ export function CameraScan({ onComplete, scanType = 'fuss', completeLabel }: Cam
           }
           badges={[
             { label: 'MESSPUNKTE: 1.247' },
-            { label: 'GENAUIGKEIT: 99,2%', verified: true },
+            { label: `GENAUIGKEIT: ${accuracyOverride ?? '91,26%'}`, verified: true },
           ]}
           buttonLabel={completeLabel ?? (isSole ? 'Zu den Sohlenmetriken' : 'Zu den Fußmetriken')}
           onComplete={onComplete}
@@ -216,13 +217,7 @@ export function CameraScan({ onComplete, scanType = 'fuss', completeLabel }: Cam
           <ProgressRing progress={overallProgress} />
         </div>
       )}
-      {!snapshot && (
-        <div className="absolute bottom-8 right-4 z-30">
-          <p className="font-mono-tight text-[10px] text-white/70">
-            {`${Math.round(overallProgress)}%`}
-          </p>
-        </div>
-      )}
+
     </div>
   );
 }
